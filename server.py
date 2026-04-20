@@ -33,7 +33,12 @@ BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 DEFAULT_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 
 # ── Server Init ────────────────────────────────────────────────────────────────
-mcp = FastMCP("telegram_mcp")
+mcp = FastMCP(
+    "telegram_mcp",
+    host="0.0.0.0",
+    port=int(os.environ.get("PORT", 8000)),
+    streamable_http_path="/mcp",
+)
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -258,5 +263,4 @@ async def telegram_send_summary(params: SendSummaryInput) -> str:
 # ── Entry Point ────────────────────────────────────────────────────────────────
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
-    mcp.run(transport="streamable-http", host="0.0.0.0", port=port, path="/mcp")
+    mcp.run(transport="streamable-http")
